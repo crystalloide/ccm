@@ -57,7 +57,7 @@ L'objectif de ccm et ccmlib est de faciliter la création, la gestion et la dest
 Il est donc destiné à tester un cluster Cassandra.
 
 
-New to Python development?
+Débutant dans le développement Python ?
 --------------------------
 
 Python a évolué depuis le début du développement de CCM. 
