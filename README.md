@@ -502,9 +502,9 @@ Prise en compte :
 
 `sudo vi /etc/environment`
 
-`PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
-JAVA_PATH="$JAVA_HOME/bin"`
+    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+    JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+    JAVA_PATH="$JAVA_HOME/bin"`
 
 Pour sortir et sauvegarder :  `:wq!`
 
