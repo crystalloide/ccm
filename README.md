@@ -437,7 +437,7 @@ ________________________________________________________________________________
 ____________________________________________________________________________________________
 ____________________________________________________________________________________________
 ____________________________________________________________________________________________
------
+
 
 1°) Avant de commencer, pour voir vos environnements Gitpod éventuellement déjà provisionnés : [cliquer ici](https://gitpod.io/workspaces)
 
@@ -448,7 +448,7 @@ Cet environnement permet de déployer un cluster Cassandra nœuds avec Gitpod
 Attention : c'est ici uniquement à des fins de développement et de formation 
  
 
-#### Mode opératoire complet pour GitPod : 
+3°) Détail et mode opératoire complet pour GitPod : 
 
 `pip install -r requirements.txt`
 `pyenv install 3.9.16`
