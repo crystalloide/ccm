@@ -442,3 +442,156 @@ Voici un exemple simple d'utilisation de ccmlib :
 
 --
 Merci à Sylvain Lebresne <sylvain@datastax.com>
+
+
+
+
+
+
+## Mode opératoire com plet pour GitPod : 
+
+`pip install -r requirements.txt`
+`pyenv install 3.9.16`
+`python -V`
+`pip install -r requirements.txt`
+`ls`
+
+`cd ccm`
+
+`python3 -m venv --prompt ccm venv`
+
+`source venv/bin/activate`
+`pip install -e /workspace/ccm`
+
+`java -version`
+
+`echo $JAVA_HOME`
+
+`sudo apt-get update`
+
+`sudo apt search openjdk`
+
+`sudo apt install openjdk-8-jdk  -y`
+`sudo apt install openjdk-8-jdk-headless  -y`
+
+## Remarque : pour Cassandra 5.0.1 : il faut JAVA JDK 11
+## sudo apt remove openjdk-8-jdk*  -y
+## sudo apt install java-11-openjdk-devel -y
+
+`update-alternatives --list java`
+## sudo update-alternatives --config java
+
+
+`/usr/bin/java -version`
+
+## Ajout du répertoire dans le PATH : (ajout tout à la fin du bashrc)
+`vi ~/.bashrc`
+
+`export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+export JAVA_PATH="$JAVA_HOME/bin"
+export PATH=$JAVA_HOME/bin/:$PATH`
+
+## Prise en compte :  
+`source ~/.bashrc`
+
+## 
+`sudo vi /etc/environment`
+
+`PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
+JAVA_PATH="$JAVA_HOME/bin"`
+
+## :wq!
+
+`java -version`
+	Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
+	openjdk version "1.8.0_422"
+	OpenJDK Runtime Environment (build 1.8.0_422-8u422-b05-1~22.04-b05)
+	OpenJDK 64-Bit Server VM (build 25.422-b05, mixed mode)
+
+`echo $JAVA_HOME`
+	/usr/lib/jvm/java-8-openjdk-amd64
+
+`echo $JAVA_PATH`
+	/usr/lib/jvm/java-8-openjdk-amd64/bin
+
+`echo $PATH`
+	/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/home/gitpod/.pyenv/shims:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/workspace/ccm/venv/bin:/home/gitpod/.sdkman/candidates/maven/current/bin:/home/gitpod/.sdkman/candidates/java/current/bin:/home/gitpod/.sdkman/candidates/gradle/current/bin:/workspace/.cargo/bin:/home/gitpod/.rvm/gems/ruby-3.2.5/bin:/home/gitpod/.rvm/gems/ruby-3.2.5@global/bin:/home/gitpod/.rvm/rubies/ruby-3.2.5/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/ide/bin/remote-cli:/home/gitpod/go/bin:/home/gitpod/go-packages/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.yarn/bin:/home/gitpod/.pnpm:/home/gitpod/.pyenv/bin:/home/gitpod/.rvm/bin:/home/gitpod/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/:/home/gitpod/.local/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin
+
+
+
+
+`sudo apt install locate`
+
+`sudo /workspace/ccm/setup.py install`
+`./setup.py install`
+`pip install ccm`
+
+`sudo apt-get install python3-distutils`
+`pip install setuptools`
+
+`python -V`
+## Affichage : 
+   Python 3.12.6
+
+## Pour enlever un essai précédent : 
+`ccm remove`
+
+## Remarque : pour Cassandra 3.11.16 : il faut JAVA JDK 8
+`ccm create test -v 3.11.16 -n 3 -s`
+
+## Remarque : pour Cassandra 5.0.1 : il faut JAVA JDK 11
+## apt install java-11-openjdk-devel -y
+`ccm create test -v 5.0.1 -n 3 -s`
+
+## ccm populate -n 3
+
+`sudo apt install net-tools`
+
+`sudo netstat -anl |grep 904`
+	tcp        0      0 127.0.0.1:9042          0.0.0.0:*               LISTEN     
+	tcp        0      0 127.0.0.2:9042          0.0.0.0:*               LISTEN     
+	tcp        0      0 127.0.0.3:9042          0.0.0.0:*               LISTEN     
+	tcp        0      0 10.0.5.2:9042           0.0.0.0:*               LISTEN     
+	
+	
+
+
+## Pour regarder l'état du cluster : 	
+
+`ccm node1 nodetool status`
+
+`
+	/workspace/ccm/venv/bin/ccm:7: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+	  import pkg_resources
+	15:59:07,489 ccm INFO Supported Java versions could not be retrieved from Cassandra distribution in '/home/gitpod/.ccm/repository/3.11.16'
+	15:59:07,489 ccm INFO Cassandra 3.x or 2.x detected, using Java 8
+	15:59:07,550 ccm INFO node1: Using the current Java 8 available on PATH for the current invocation of Cassandra 3.11.16.
+	Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
+`
+`
+	Datacenter: datacenter1
+	=======================
+	Status=Up/Down
+	|/ State=Normal/Leaving/Joining/Moving
+	--  Address    Load       Tokens       Owns (effective)  Host ID                               Rack
+	UN  127.0.0.1  66.17 KiB  1            66.7%             2f973b07-eb15-488c-b4bf-68878fab1b99  rack1
+	UN  127.0.0.2  66.18 KiB  1            66.7%             1e0663d6-411e-4342-9ccd-ceafb5b25dad  rack1
+	UN  127.0.0.3  66.17 KiB  1            66.7%             da5d53b1-f5b4-45a7-a83d-acbc4e85dea9  rack1
+`
+
+## Pour aller en cqlsh sur un des noeuds : 
+`pip install cqlsh`
+
+## Pour retrouver l'adresse IP à donner en paramètre à CQLSH : 
+`ccm node1 nodetool status`
+
+## Pour se connecter et sortir : 
+`cqlsh 127.0.0.1`
+
+`exit`
+
+
+## Have Fun :-)
+
+
