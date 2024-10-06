@@ -503,18 +503,26 @@ Prise en compte :
 JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 JAVA_PATH="$JAVA_HOME/bin"`
 
-Pour sortir et sauvegarder :wq!
+Pour sortir et sauvegarder :  `:wq!`
+
+Affichage de la version JAVA :
 
 `java -version`
-	Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
+
+    Affichage : 
+        Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
 	openjdk version "1.8.0_422"
 	OpenJDK Runtime Environment (build 1.8.0_422-8u422-b05-1~22.04-b05)
 	OpenJDK 64-Bit Server VM (build 25.422-b05, mixed mode)
 
 `echo $JAVA_HOME`
+
+    Affichage : 
 	/usr/lib/jvm/java-8-openjdk-amd64
 
 `echo $JAVA_PATH`
+
+    Affichage : 
 	/usr/lib/jvm/java-8-openjdk-amd64/bin
 
 `echo $PATH`
@@ -537,12 +545,15 @@ On affiche la version de Python :
 `python -V`
 
 Affichage : 
+
     Python 3.12.6
 
 Pour enlever un essai précédent de cluster généré avec ccm : 
+
 `ccm remove`
 
 Remarque : pour Cassandra 3.11.16 : il faut JAVA JDK 8
+
 `ccm create test -v 3.11.16 -n 3 -s`
 
 Rappel : pour Cassandra 5.0.1 : il faut JAVA JDK 11 (voir début TP lors de l'installation de Java)
