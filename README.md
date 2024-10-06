@@ -481,19 +481,22 @@ sudo apt remove openjdk-8-jdk*  -y
 sudo apt install java-11-openjdk-devel -y
 
 `update-alternatives --list java`
+
 Si plusieurs java installés : sudo update-alternatives --config java
 
 
 `/usr/bin/java -version`
 
 Ajout du répertoire dans le PATH : (ajout tout à la fin du bashrc)
+
 `vi ~/.bashrc`
 
-`export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export JAVA_PATH="$JAVA_HOME/bin"
-export PATH=$JAVA_HOME/bin/:$PATH`
+    export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+    export JAVA_PATH="$JAVA_HOME/bin"
+    export PATH=$JAVA_HOME/bin/:$PATH`
 
 Prise en compte :  
+
 `source ~/.bashrc`
 
 
