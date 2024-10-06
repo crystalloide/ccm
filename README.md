@@ -510,10 +510,11 @@ Affichage de la version JAVA :
 `java -version`
 
     Affichage : 
-        Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
-	openjdk version "1.8.0_422"
-	OpenJDK Runtime Environment (build 1.8.0_422-8u422-b05-1~22.04-b05)
-	OpenJDK 64-Bit Server VM (build 25.422-b05, mixed mode)
+    
+    Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
+    openjdk version "1.8.0_422"
+    OpenJDK Runtime Environment (build 1.8.0_422-8u422-b05-1~22.04-b05)
+    OpenJDK 64-Bit Server VM (build 25.422-b05, mixed mode)
 
 `echo $JAVA_HOME`
 
@@ -528,7 +529,8 @@ Affichage de la version JAVA :
 `echo $PATH`
 
     Affichage : 
-    /usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/home/gitpod/.pyenv/shims:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/workspace/ccm/venv/bin:/home/gitpod/.sdkman/candidates/maven/current/bin:/home/gitpod/.sdkman/candidates/java/current/bin:/home/gitpod/.sdkman/candidates/gradle/current/bin:/workspace/.cargo/bin:/home/gitpod/.rvm/gems/ruby-3.2.5/bin:/home/gitpod/.rvm/gems/ruby-3.2.5@global/bin:/home/gitpod/.rvm/rubies/ruby-3.2.5/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/ide/bin/remote-cli:/home/gitpod/go/bin:/home/gitpod/go-packages/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.yarn/bin:/home/gitpod/.pnpm:/home/gitpod/.pyenv/bin:/home/gitpod/.rvm/bin:/home/gitpod/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/:/home/gitpod/.local/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin
+    
+    /usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/home/gitpod/.pyenv/shims:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/lib/jvm/java-8-openjdk- amd64/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/workspace/ccm/venv/bin:/home/gitpod/.sdkman/candidates/maven/current/bin:/home/gitpod/.sdkman/candidates/java/current/bin:/home/gitpod/.sdkman/candidates/gradle/current/bin:/workspace/.cargo/bin:/home/gitpod/.rvm/gems/ruby-3.2.5/bin:/home/gitpod/.rvm/gems/ruby-3.2.5@global/bin:/home/gitpod/.rvm/rubies/ruby-3.2.5/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/ide/bin/remote-cli:/home/gitpod/go/bin:/home/gitpod/go-packages/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.yarn/bin:/home/gitpod/.pnpm:/home/gitpod/.pyenv/bin:/home/gitpod/.rvm/bin:/home/gitpod/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/:/home/gitpod/.local/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin
 
 Pour retrouver un fichier si besoin : 
 `sudo apt install locate`
