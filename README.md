@@ -1,7 +1,7 @@
 CCM (Cassandra Cluster Manager)
 ====================================================
 
-WARNING - CCM configuration changes using updateconf does not happen according to CASSANDRA-17379
+#### WARNING - CCM configuration changes using updateconf does not happen according to CASSANDRA-17379
 -------------------------------------------------------------------------------------------------
 
 Après CASSANDRA-15234, pour prendre en charge les tests de mise à niveau de Python, 
@@ -143,19 +143,6 @@ ccm est disponible sur [Python Package Index][pip]:
     pip install ccm
 
 [pip]: https://pypi.org/project/ccm/
-
-
-Test sur environnement Gitpod :
------
-
-#### 1°) Avant de commencer, pour voir vos environnements Gitpod éventuellement déjà provisionnés : [cliquer ici](https://gitpod.io/workspaces)
-
-#### 2°) Pour instancier l'environnement Gitpod de démonstration accessible avec un simple navigateur web :
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/crystalloide/ccm)
-
-#### Cet environnement permet de déployer un cluster Cassandra nœuds avec Gitpod 
-#### Attention : c'est ici uniquement à des fins de développement et de formation 
- 
 
 
 Usage
@@ -448,7 +435,19 @@ Merci à Sylvain Lebresne <sylvain@datastax.com>
 
 
 
-## Mode opératoire com plet pour GitPod : 
+## Test sur environnement Gitpod :
+-----
+
+#### 1°) Avant de commencer, pour voir vos environnements Gitpod éventuellement déjà provisionnés : [cliquer ici](https://gitpod.io/workspaces)
+
+#### 2°) Pour instancier l'environnement Gitpod de démonstration accessible avec un simple navigateur web :
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/crystalloide/ccm)
+
+#### Cet environnement permet de déployer un cluster Cassandra nœuds avec Gitpod 
+#### Attention : c'est ici uniquement à des fins de développement et de formation 
+ 
+
+### Mode opératoire complet pour GitPod : 
 
 `pip install -r requirements.txt`
 `pyenv install 3.9.16`
