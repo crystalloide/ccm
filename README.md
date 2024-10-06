@@ -151,7 +151,7 @@ Test sur environnement Gitpod :
 #### 1°) Avant de commencer, pour voir vos environnements Gitpod éventuellement déjà provisionnés : [cliquer ici](https://gitpod.io/workspaces)
 
 #### 2°) Pour instancier l'environnement Gitpod de démonstration accessible avec un simple navigateur web :
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/crystalloide/Gitpod-Cassandra-axonops)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/crystalloide/ccm)
 
 #### Cet environnement permet de déployer un cluster Cassandra nœuds avec Gitpod 
 #### Attention : c'est ici uniquement à des fins de développement et de formation 
