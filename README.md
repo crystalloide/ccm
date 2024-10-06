@@ -371,7 +371,7 @@ Ainsi, cela ne fonctionnera pas avec des versions suffisamment anciennes de ccm.
 Essai
 -----------------------
 
-Creation de l'environnement virtel :
+Creation de l'environnement virtuel :
 
     python3 -m venv ccm
 
@@ -520,7 +520,6 @@ JAVA_PATH="$JAVA_HOME/bin"`
 
 
 
-
 `sudo apt install locate`
 
 `sudo /workspace/ccm/setup.py install`
@@ -553,7 +552,6 @@ JAVA_PATH="$JAVA_HOME/bin"`
 	tcp        0      0 127.0.0.2:9042          0.0.0.0:*               LISTEN     
 	tcp        0      0 127.0.0.3:9042          0.0.0.0:*               LISTEN     
 	tcp        0      0 10.0.5.2:9042           0.0.0.0:*               LISTEN     
-	
 	
 
 
@@ -593,5 +591,3 @@ JAVA_PATH="$JAVA_HOME/bin"`
 
 
 ## Have Fun :-)
-
-
