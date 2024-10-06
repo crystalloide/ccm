@@ -516,11 +516,12 @@ JAVA_PATH="$JAVA_HOME/bin"`
 	/usr/lib/jvm/java-8-openjdk-amd64/bin
 
 `echo $PATH`
-	/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/home/gitpod/.pyenv/shims:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/workspace/ccm/venv/bin:/home/gitpod/.sdkman/candidates/maven/current/bin:/home/gitpod/.sdkman/candidates/java/current/bin:/home/gitpod/.sdkman/candidates/gradle/current/bin:/workspace/.cargo/bin:/home/gitpod/.rvm/gems/ruby-3.2.5/bin:/home/gitpod/.rvm/gems/ruby-3.2.5@global/bin:/home/gitpod/.rvm/rubies/ruby-3.2.5/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/ide/bin/remote-cli:/home/gitpod/go/bin:/home/gitpod/go-packages/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.yarn/bin:/home/gitpod/.pnpm:/home/gitpod/.pyenv/bin:/home/gitpod/.rvm/bin:/home/gitpod/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/:/home/gitpod/.local/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin
+`Affichage : 
+/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/home/gitpod/.pyenv/shims:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/lib/jvm/java-8-openjdk-amd64/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/usr/bin/:/workspace/.cargo/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/workspace/ccm/venv/bin:/home/gitpod/.sdkman/candidates/maven/current/bin:/home/gitpod/.sdkman/candidates/java/current/bin:/home/gitpod/.sdkman/candidates/gradle/current/bin:/workspace/.cargo/bin:/home/gitpod/.rvm/gems/ruby-3.2.5/bin:/home/gitpod/.rvm/gems/ruby-3.2.5@global/bin:/home/gitpod/.rvm/rubies/ruby-3.2.5/bin:/workspace/go/bin:/home/gitpod/.nix-profile/bin:/ide/bin/remote-cli:/home/gitpod/go/bin:/home/gitpod/go-packages/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.yarn/bin:/home/gitpod/.pnpm:/home/gitpod/.pyenv/bin:/home/gitpod/.rvm/bin:/home/gitpod/.cargo/bin:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/:/home/gitpod/.local/bin:/usr/games:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin:/home/gitpod/.nvm/versions/node/v20.17.0/bin:/home/gitpod/.rvm/bin`
 
-
-
+Pour retrouver un fichier si besoin : 
 `sudo apt install locate`
+
 
 `sudo /workspace/ccm/setup.py install`
 `./setup.py install`
@@ -529,23 +530,29 @@ JAVA_PATH="$JAVA_HOME/bin"`
 `sudo apt-get install python3-distutils`
 `pip install setuptools`
 
-`python -V`
-## Affichage : 
-   Python 3.12.6
+On affiche la version de Python : 
 
-## Pour enlever un essai précédent : 
+`python -V`
+
+#### Affichage : 
+    Python 3.12.6
+
+#### Pour enlever un essai précédent de cluster généré avec ccm : 
 `ccm remove`
 
-## Remarque : pour Cassandra 3.11.16 : il faut JAVA JDK 8
+#### Remarque : pour Cassandra 3.11.16 : il faut JAVA JDK 8
 `ccm create test -v 3.11.16 -n 3 -s`
 
-## Remarque : pour Cassandra 5.0.1 : il faut JAVA JDK 11
-## apt install java-11-openjdk-devel -y
+Rappel : pour Cassandra 5.0.1 : il faut JAVA JDK 11 (voir début TP lors de l'installation de Java)
+
+Et une fois JAVA 11 installé :  
 `ccm create test -v 5.0.1 -n 3 -s`
 
-## ccm populate -n 3
+On installe netstat :
 
 `sudo apt install net-tools`
+
+On regarde les IP des process à l'écoute sur le port 9042 : 
 
 `sudo netstat -anl |grep 904`
 	tcp        0      0 127.0.0.1:9042          0.0.0.0:*               LISTEN     
@@ -554,20 +561,19 @@ JAVA_PATH="$JAVA_HOME/bin"`
 	tcp        0      0 10.0.5.2:9042           0.0.0.0:*               LISTEN     
 	
 
-
-## Pour regarder l'état du cluster : 	
+#### On regarde enfin l'état du cluster : 	
 
 `ccm node1 nodetool status`
 
-`
+` AFFICHAGE : 
 	/workspace/ccm/venv/bin/ccm:7: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
 	  import pkg_resources
 	15:59:07,489 ccm INFO Supported Java versions could not be retrieved from Cassandra distribution in '/home/gitpod/.ccm/repository/3.11.16'
 	15:59:07,489 ccm INFO Cassandra 3.x or 2.x detected, using Java 8
 	15:59:07,550 ccm INFO node1: Using the current Java 8 available on PATH for the current invocation of Cassandra 3.11.16.
 	Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
-`
-`
+` 
+` 
 	Datacenter: datacenter1
 	=======================
 	Status=Up/Down
@@ -578,16 +584,16 @@ JAVA_PATH="$JAVA_HOME/bin"`
 	UN  127.0.0.3  66.17 KiB  1            66.7%             da5d53b1-f5b4-45a7-a83d-acbc4e85dea9  rack1
 `
 
-## Pour aller en cqlsh sur un des noeuds : 
+#### Pour aller en cqlsh sur un des noeuds : 
 `pip install cqlsh`
 
-## Pour retrouver l'adresse IP à donner en paramètre à CQLSH : 
+#### Pour retrouver l'adresse IP à donner en paramètre à CQLSH : 
 `ccm node1 nodetool status`
 
-## Pour se connecter et sortir : 
+#### Pour se connecter et sortir : 
 `cqlsh 127.0.0.1`
 
 `exit`
 
 
-## Have Fun :-)
+### Have Fun :-)
