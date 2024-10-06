@@ -430,24 +430,25 @@ Voici un exemple simple d'utilisation de ccmlib :
 --
 Merci à Sylvain Lebresne <sylvain@datastax.com>
 
-
-
-
-
-
+____________________________________________________________________________________________
+____________________________________________________________________________________________
+____________________________________________________________________________________________
 ## Test sur environnement Gitpod :
+____________________________________________________________________________________________
+____________________________________________________________________________________________
+____________________________________________________________________________________________
 -----
 
-#### 1°) Avant de commencer, pour voir vos environnements Gitpod éventuellement déjà provisionnés : [cliquer ici](https://gitpod.io/workspaces)
+1°) Avant de commencer, pour voir vos environnements Gitpod éventuellement déjà provisionnés : [cliquer ici](https://gitpod.io/workspaces)
 
-#### 2°) Pour instancier l'environnement Gitpod de démonstration accessible avec un simple navigateur web :
+2°) Pour instancier l'environnement Gitpod de démonstration accessible avec un simple navigateur web :
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/crystalloide/ccm)
 
-#### Cet environnement permet de déployer un cluster Cassandra nœuds avec Gitpod 
-#### Attention : c'est ici uniquement à des fins de développement et de formation 
+Cet environnement permet de déployer un cluster Cassandra nœuds avec Gitpod 
+Attention : c'est ici uniquement à des fins de développement et de formation 
  
 
-### Mode opératoire complet pour GitPod : 
+#### Mode opératoire complet pour GitPod : 
 
 `pip install -r requirements.txt`
 `pyenv install 3.9.16`
@@ -473,34 +474,36 @@ Merci à Sylvain Lebresne <sylvain@datastax.com>
 `sudo apt install openjdk-8-jdk  -y`
 `sudo apt install openjdk-8-jdk-headless  -y`
 
-## Remarque : pour Cassandra 5.0.1 : il faut JAVA JDK 11
-## sudo apt remove openjdk-8-jdk*  -y
-## sudo apt install java-11-openjdk-devel -y
+Remarque : pour Cassandra 5.0.1 : il faudrait JAVA JDK 11 donc on ferait les commandes ci-dessous :  
+
+sudo apt remove openjdk-8-jdk*  -y
+
+sudo apt install java-11-openjdk-devel -y
 
 `update-alternatives --list java`
-## sudo update-alternatives --config java
+Si plusieurs java installés : sudo update-alternatives --config java
 
 
 `/usr/bin/java -version`
 
-## Ajout du répertoire dans le PATH : (ajout tout à la fin du bashrc)
+Ajout du répertoire dans le PATH : (ajout tout à la fin du bashrc)
 `vi ~/.bashrc`
 
 `export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 export JAVA_PATH="$JAVA_HOME/bin"
 export PATH=$JAVA_HOME/bin/:$PATH`
 
-## Prise en compte :  
+Prise en compte :  
 `source ~/.bashrc`
 
-## 
+
 `sudo vi /etc/environment`
 
 `PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 JAVA_PATH="$JAVA_HOME/bin"`
 
-## :wq!
+Pour sortir et sauvegarder :wq!
 
 `java -version`
 	Picked up JAVA_TOOL_OPTIONS: -XX:+UseContainerSupport -XX:ActiveProcessorCount=2
@@ -533,13 +536,13 @@ On affiche la version de Python :
 
 `python -V`
 
-#### Affichage : 
+Affichage : 
     Python 3.12.6
 
-#### Pour enlever un essai précédent de cluster généré avec ccm : 
+Pour enlever un essai précédent de cluster généré avec ccm : 
 `ccm remove`
 
-#### Remarque : pour Cassandra 3.11.16 : il faut JAVA JDK 8
+Remarque : pour Cassandra 3.11.16 : il faut JAVA JDK 8
 `ccm create test -v 3.11.16 -n 3 -s`
 
 Rappel : pour Cassandra 5.0.1 : il faut JAVA JDK 11 (voir début TP lors de l'installation de Java)
@@ -560,7 +563,7 @@ On regarde les IP des process à l'écoute sur le port 9042 :
 	tcp        0      0 10.0.5.2:9042           0.0.0.0:*               LISTEN     
 	
 
-#### On regarde enfin l'état du cluster : 	
+On regarde enfin l'état du cluster : 	
 
 `ccm node1 nodetool status`
 
@@ -583,13 +586,13 @@ On regarde les IP des process à l'écoute sur le port 9042 :
 	UN  127.0.0.3  66.17 KiB  1            66.7%             da5d53b1-f5b4-45a7-a83d-acbc4e85dea9  rack1
 `
 
-#### Pour aller en cqlsh sur un des noeuds : 
+Pour aller en cqlsh sur un des noeuds : 
 `pip install cqlsh`
 
-#### Pour retrouver l'adresse IP à donner en paramètre à CQLSH : 
+Pour retrouver l'adresse IP à donner en paramètre à CQLSH : 
 `ccm node1 nodetool status`
 
-#### Pour se connecter et sortir : 
+Pour se connecter et sortir : 
 `cqlsh 127.0.0.1`
 
 `exit`
