@@ -4,312 +4,334 @@ CCM (Cassandra Cluster Manager)
 WARNING - CCM configuration changes using updateconf does not happen according to CASSANDRA-17379
 -------------------------------------------------------------------------------------------------
 
-After CASSANDRA-15234, to support the Python upgrade tests CCM updateconf is replacing
-new key name and value in case the old key name and value is provided.  
-For example, if you add to config `permissions_validity_in_ms`, it will replace 
-`permissions_validity` in default cassandra.yaml 
-This was needed to ensure correct overloading as CCM cassandra.yaml has keys 
-sorted lexicographically. CASSANDRA-17379 was opened to improve the user experience 
-and deprecate the overloading of parameters in cassandra.yaml. In CASSANDRA 4.1+, by default, 
-we refuse starting Cassandra with a config containing both old and new config keys for the
-same parameter. Start Cassandra with `-Dcassandra.allow_new_old_config_keys=true` to override.
-For historical reasons duplicate config keys in cassandra.yaml are allowed by default, start 
-Cassandra with `-Dcassandra.allow_duplicate_config_keys=false` to disallow this. Please note
-that key_cache_save_period, row_cache_save_period, counter_cache_save_period will be affected 
-only by `-Dcassandra.allow_duplicate_config_keys`. Ticket CASSANDRA-17949 was opened to decide
-the future of CCM updateconf post CASSANDRA-17379, until then - bear in mind that old replace 
-new parameters' in cassandra.yaml when using updateconf even if 
-`-Dcassandra.allow_new_old_config_keys=false` is set by default. 
+Après CASSANDRA-15234, pour prendre en charge les tests de mise à niveau de Python, 
 
-TLDR Do not exercise overloading of parameters in CCM if possible. Also, the mentioned changes
-are done only in master branch. Probably the best way to handle cassandra 4.1 in CCM at this 
-point is to set `-Dcassandra.allow_new_old_config_keys=false` and 
-`-Dcassandra.allow_duplicate_config_keys=false` 
-to prohibit any kind of overloading when using CCM master and CCM released versions
+CCM updateconf remplace le nouveau nom de clé et la nouvelle valeur au cas où l'ancien nom de clé et la nouvelle valeur sont fournis.
+
+Par exemple, si vous ajoutez dans la config  `permissions_validity_in_ms`, cela remplacera
+
+`permissions_validity` dans la valeur par défaut dans cassandra.yaml 
+
+Cela était nécessaire pour garantir une surcharge correcte car CCM cassandra.yaml a des clés triées lexicographiquement. 
+
+CASSANDRA-17379 a été ouvert pour améliorer l'expérience utilisateur et déprécier la surcharge des paramètres dans cassandra.yaml. 
+
+Dans CASSANDRA 4.1+, par défaut, Cassandra refuse de démarrer avec une configuration contenant à la fois les anciennes et les nouvelles clés de configuration pour le même paramètre. 
+
+Il faut démarrer Cassandra avec `-Dcassandra.allow_new_old_config_keys=true` pour povour overrider.
+
+Pour des raisons historiques, les clés de configuration en double dans cassandra.yaml sont autorisées par défaut, 
+
+démarrez Cassandra avec  `-Dcassandra.allow_duplicate_config_keys=false` pour empêcher cela. 
+
+Veuillez noter que key_cache_save_period, row_cache_save_period, counter_cache_save_period 
+
+ne seront affectés que par `-Dcassandra.allow_duplicate_config_keys`. 
+
+Le ticket CASSANDRA-17949 a été ouvert pour décider de l'avenir de updateconf dans CCM après CASSANDRA-17379 : 
+
+Jusque-là, gardez à l'esprit que les anciens paramètres remplacent les nouveaux paramètres dans cassandra.yaml lors de l'utilisation de updateconf
+
+même si  `-Dcassandra.allow_new_old_config_keys=false` est mis par défaut. 
+
+Remarque : 
+
+Ne surchargez pas les paramètres dans CCM si possible. 
+
+De plus, les modifications mentionnées ne sont effectuées que dans la branche principale. 
+
+La meilleure façon de gérer Cassandra 4.1 dans CCM à ce stade est probablement de définir les paramètres 
+
+`-Dcassandra.allow_new_old_config_keys=false` et `-Dcassandra.allow_duplicate_config_keys=false` 
+
+afin d'interdire tout type de surcharge lors de l'utilisation des versions principales/publiées de CCM
 
 
 CCM (Cassandra Cluster Manager)
 ====================================================
 
-A script/library to create, launch and remove an Apache Cassandra cluster on
-localhost.
+C'est un script/bibliothèque pour créer, lancer et supprimer un cluster Apache Cassandra en localhost.
 
-The goal of ccm and ccmlib is to make it easy to create, manage and destroy a
-small Cassandra cluster on a local box. It is meant for testing a Cassandra cluster.
+L'objectif de ccm et ccmlib est de faciliter la création, la gestion et la destruction d'un petit cluster Cassandra sur une machine locale. 
+
+Il est donc destiné à tester un cluster Cassandra.
+
 
 New to Python development?
 --------------------------
-Python has moved on since CCM started development. `pip` is the new `easy_install`,
-Python 3 is the new 2.7, and pyenv and virtualenv are strongly recommended for managing
-multiple Python versions and dependencies for specific Python applications.
 
-A typical MacOS setup would be to install [Homebrew](https://docs.brew.sh/Installation),
-then `brew install pyenv` to manage Python versions and then use virtualenv to
-manage the dependencies for CCM. Make sure to add [brew's bin directory to your path in
-your ~/.zshenv](https://www.zerotohero.dev/zshell-startup-files/). This would be
-`/usr/local` for MacOS Intel and `/opt/homebrew/` for MacOS on Apple Silicon.
+Python a évolué depuis le début du développement de CCM. 
 
-Now you are ready to install Python using pyenv. To avoid getting a bleeding edge version that will fail with 
-some aspect of CCM you can `pyenv install 3.9.16`.
+pip a remplacé easy_install, Python 3 a remplacé Python 2.7, 
 
-To create the virtualenv run `python3 -m venv --prompt ccm venv` with your git repo as the
-current working directory to create a virtual environment for CCM. Then `source venv/bin/activate` to
-enable the venv for the current terminal and `deactivate` to exit.
+et pyenv et virtualenv sont fortement recommandés pour gérer plusieurs versions et dépendances Python pour des applications Python spécifiques.
 
-Now you a ready to set up the venv with CCM and its test dependencies. `pip install -e <path_to_ccm_repo>`
-to install CCM, and its runtime dependencies from `requirements.txt`, so that the version of
-CCM you are running points to the code you are actively working on. There is no build or package step because you
-are editing the Python files being run every time you invoke CCM.
 
-Almost there. Now you just need to add the test dependencies that are not in `requirements.txt`.
-`pip install mock pytest requests` to finish setting up your dev environment!
+Vous êtes maintenant prêt à installer Python à l'aide de pyenv. 
 
-Another caveat that has recently appeared Cassandra versions 4.0 and below ship with a version of JNA that isn't
-compatible with Apple Silicon and there are no plans to update JNA on those versions. One work around if you are
-generally building Cassandra from source to use with CCM is to replace the JNA jar in your Maven repo with a [newer
-one](https://search.maven.org/artifact/net.java.dev.jna/jna/5.8.0/jar) that supports Apple Silicon.
-Which you version you need to replace will vary depending on the Cassandra version, but it will normally be in
-`~/.m2/repository/net/java/dev/jna/jna/<someversion>`. You can also replace the library in
-`~/.ccm/repository/<whatever>/lib`.
+Pour éviter d'obtenir une version qui échouera avec certains aspects de CCM, vous pouvez installer la version 3.9.16 de Python :
+`pyenv install 3.9.16`
 
-Also don't forget to disable `AirPlay Receiver` on MacOS which also listens on port 7000.
+Pour créer l'environnement virtuel virtualenv, à partir de votre dépôt git comme répertoire de travail actuel, 
 
-Requirements
+pour créer un environnement virtuel pour CCM : lancer la commande : 
+`python3 -m venv --prompt ccm venv` 
+
+Ensuite, faire `source venv/bin/activate` pour activer venv pour le terminal actuel
+
+et `deactivate` pour le quitter
+
+
+Vous êtes maintenant prêt à configurer le venv avec CCM et ses dépendances de test. 
+
+`pip install -e <path_to_ccm_repo>` 
+
+pour installer CCM et ses dépendances d'exécution à partir de requirements.txt, 
+
+afin que la version de CCM que vous exécutez pointe vers le code sur lequel vous travaillez activement. 
+
+Il n'y a pas d'étape de build ou de package car vous modifiez les fichiers Python en cours d'exécution à chaque fois que vous appelez CCM.
+
+Vous y êtes presque. Il ne vous reste plus qu'à ajouter les dépendances de test qui ne sont pas dans `requirements.txt`. 
+
+`pip install mock pytest requests` pour finir de configurer votre environnement de développement !
+
+
+Prerequis
 ------------
 
-- A working python installation (tested to work with python 2.7).
-- See `requirements.txt` for runtime requirements
-- `mock` and `pytest` for tests
-- ant (http://ant.apache.org/, on Mac OS X, `brew install ant`)
-- Java, Cassandra currently builds with either 8 or 11 and is restricted to JDK 8 language
-  features and dependencies. There are several sources for the JDK and Azul Zulu is one good option.
-- If you want to create multiple node clusters, the simplest way is to use
-  multiple loopback aliases. On modern linux distributions you probably don't
-  need to do anything, but on Mac OS X, you will need to create the aliases with
+- Une installation Python fonctionnelle (testée pour fonctionner avec Python 2.7).
 
-      sudo ifconfig lo0 alias 127.0.0.2 up
-      sudo ifconfig lo0 alias 127.0.0.3 up
-      ...
+- Voir `requirements.txt` pour les prérequis de runtime
 
-  Note that the usage section assumes that at least 127.0.0.1, 127.0.0.2 and
-  127.0.0.3 are available.
+- `mock` et `pytest` pour les tests
 
-### Optional Requirements
+- ant (http://ant.apache.org/)
 
-- Paramiko (http://www.paramiko.org/): Paramiko adds the ability to execute CCM
-                                       remotely; `pip install paramiko`
+- Java : actuellement, Cassandra est compilé avec Java 8 ou 11 et est limité aux fonctionnalités et dépendances du langage JDK 8.
 
-__Note__: The remote machine must be configured with an SSH server and a working
-          CCM. When working with multiple nodes each exposed IP address must be
-          in sequential order. For example, the last number in the 4th octet of
-          a IPv4 address must start with `1` (e.g. 192.168.33.11). See
-          [Vagrantfile](misc/Vagrantfile) for help with configuration of remote
-          CCM machine.
+  Il existe plusieurs sources pour le JDK : Azul Zulu est une bonne option.
 
+- Si vous souhaitez créer plusieurs clusters de nœuds, le moyen le plus simple est d'utiliser plusieurs alias de bouclage.
 
-Known issues
-------------
-Windows only:
-  - `node start` pops up a window, stealing focus.
-  - cqlsh started from ccm show incorrect prompts on command-prompt
-  - non nodetool-based command-line options fail (sstablesplit, scrub, etc)
-  - To install psutil, you must use the .msi from pypi. pip install psutil will not work
-  - You will need ant.bat in your PATH in order to build C* from source
-  - You must run with an Unrestricted Powershell Execution-Policy if using Cassandra 2.1.0+
-  - Ant installed via [chocolatey](https://chocolatey.org/) will not be found by ccm, so you must create a symbolic
-    link in order to fix the issue (as administrator):
-    - cmd /c mklink C:\ProgramData\chocolatey\bin\ant.bat C:\ProgramData\chocolatey\bin\ant.exe
+  Sur les distributions Linux modernes, il n'y a rien à faire.
 
-MaxOS only:
-  - Airplay listens for incoming connections on 7000 so disable `Settings` -> `General` -> `AirDrop & Handoff` -> `AirPlay Receiver`
+  Notez que la section d'utilisation suppose qu'au moins 127.0.0.1, 127.0.0.2 et 127.0.0.3 sont disponibles.
 
-Remote Execution only:
-  - Using `--config-dir` and `--install-dir` with `create` may not work as
-    expected; since the configuration directory and the installation directory
-    contain lots of files they will not be copied over to the remote machine
-    like most other options for cluster and node operations
-  - cqlsh started from ccm using remote execution will not start
-    properly (e.g.`ccm --ssh-host 192.168.33.11 node1 cqlsh`); however
-    `-x <CMDS>` or `--exec=CMDS` can still be used to execute a CQLSH command
-    on a remote node.
+### Pré-requis optionnels : 
+
+- Paramiko (http://www.paramiko.org/): Paramiko ajoute la possibilité d'exécuter CCM à distance :
+  `pip install paramiko`
+
+Remarque : la machine distante doit être configurée avec un serveur SSH et un CCM fonctionnel. 
+
+Lorsque vous travaillez avec plusieurs nœuds, chaque adresse IP exposée doit être dans un ordre séquentiel. 
+
+Par exemple, le dernier numéro du 4e octet d'une adresse IPv4 doit commencer par 1 (par exemple 192.168.33.11). 
+
+Consultez le fichier [Vagrantfile](misc/Vagrantfile) pour obtenir de l'aide sur la configuration de la machine CCM distante.
 
 Installation
 ------------
 
-ccm uses python distutils so from the source directory run:
+ccm utilise la librairie python distutils, donc à partir du répertoire source, lancer :
 
     sudo ./setup.py install
 
-ccm is available on the [Python Package Index][pip]:
+ccm est disponible sur [Python Package Index][pip]:
 
     pip install ccm
 
-There is also a [Homebrew package][brew] available:
+[pip]: https://pypi.org/project/ccm/
 
-    brew install ccm
-
-  [pip]: https://pypi.org/project/ccm/
-  [brew]: https://github.com/Homebrew/homebrew-core/blob/master/Formula/ccm.rb
 
 Usage
 -----
 
-Let's say you wanted to fire up a 3 node Cassandra cluster.
+Disons que l'on souhaite démarrer un cluster Cassandra à 3 nœuds :
 
-### Short version
+### Version courte :
 
     ccm create test -v 2.0.5 -n 3 -s
 
-You will of course want to replace `2.0.5` by whichever version of Cassandra
-you want to test.
+Il faudra bien sûr remplacer la version `2.0.5` par la version de Cassandra souhaitée.
 
-### Longer version
 
-ccm works from a Cassandra source tree (not the jars). There are two ways to
-tell ccm how to find the sources:
-  1. If you have downloaded *and* compiled Cassandra sources, you can ask ccm
-     to use those by initiating a new cluster with:
+### Version longue : 
+
+ccm fonctionne à partir d'un arbre source Cassandra (pas à partir de jars). 
+
+Il existe deux manières d'indiquer à ccm comment trouver les sources :
+
+  1. Si on a téléchargé *et* compilé les sources de Cassandra,
+
+     on peut à ccm de les utiliser en lançant un nouveau cluster avec :
 
         ccm create test --install-dir=<path/to/cassandra-sources>
 
-     or, from that source tree directory, simply
+     ou, à partir de ce répertoire d'arborescence source, simplement
 
           ccm create test
 
-  2. You can ask ccm to use a released version of Cassandra. For instance to
-     use Cassandra 2.0.5, run
+  3. On peut demander à ccm d'utiliser une version publiée de Cassandra.
+
+     Par exemple, pour utiliser Cassandra 2.0.5, exécutez
 
           ccm create test -v 2.0.5
 
-     ccm will download the binary (from http://archive.apache.org/dist/cassandra),
-     and set the new cluster to use it. This means
-     that this command can take a few minutes the first time you
-     create a cluster for a given version. ccm saves the compiled
-     source in `~/.ccm/repository/`, so creating a cluster for that
-     version will be much faster the second time you run it
-     (note however that if you create a lot of clusters with
-     different versions, this will take up disk space).
+     ccm va télécharger le binaire (depuis http://archive.apache.org/dist/cassandra),
 
-Once the cluster is created, you can populate it with 3 nodes with:
+     et configurer le nouveau cluster pour l'utiliser.
+
+     Cela signifie que cette commande peut prendre quelques minutes la première fois que vous créez un cluster pour une version donnée.
+
+     ccm enregistre la source compilée dans ~/.ccm/repository/,
+
+     donc la création d'un cluster pour cette version sera beaucoup plus rapide la deuxième fois que vous l'exécuterez
+
+     (notez cependant que si vous créez beaucoup de clusters avec des versions différentes, cela prendra de l'espace disque).
+
+Une fois le cluster créé, vous pouvez le peupler de 3 nœuds avec :
 
     ccm populate -n 3
 
-For Mac OSX, create a new interface for every node besides the first, for example if you populated your cluster with 3 nodes, create interfaces for 127.0.0.2 and 127.0.0.3 like so:
 
-    sudo ifconfig lo0 alias 127.0.0.2
-    sudo ifconfig lo0 alias 127.0.0.3
-
-Note these aliases will disappear on reboot. For permanent network aliases on Mac OSX see ![Network Aliases](./NETWORK_ALIASES.md).
-
-After that execute:
+Après cela, exécutez :
 
     ccm start
 
-That will start 3 nodes on IP 127.0.0.[1, 2, 3] on port 9160 for thrift, port
-7000 for the internal cluster communication and ports 7100, 7200 and 7300 for JMX.
-You can check that the cluster is correctly set up with
+Cela démarrera 3 nœuds avec respectivement les IP 127.0.0.[1, 2, 3] sur le port 9160 pour Thrift, 
+
+le port 7000 pour la communication interne du cluster et les ports 7100, 7200 et 7300 pour JMX. 
+
+Vous pouvez vérifier que le cluster est correctement configuré avec :
 
     ccm node1 ring
 
-You can then bootstrap a 4th node with
+Vous pouvez ensuite démarrer un 4ème nœud avec :
 
     ccm add node4 -i 127.0.0.4 -j 7400 -b
 
-(populate is just a shortcut for adding multiple nodes initially)
+(populate n'est qu'un raccourci pour ajouter plusieurs nœuds la 1ère fois)
 
-ccm provides a number of conveniences, like flushing all of the nodes of
-the cluster:
+ccm fournit un certain nombre de commodités, comme le vidage de tous les nœuds du cluster :
 
     ccm flush
 
-or only one node:
+ou un seul nœud :
 
     ccm node2 flush
 
-You can also easily look at the log file of a given node with:
+Vous pouvez également consulter facilement le fichier de log d'un nœud donné avec :
 
     ccm node1 showlog
 
-Finally, you can get rid of the whole cluster (which will stop the node and
-remove all the data) with
+Enfin, vous pouvez vous débarrasser de l’ensemble du cluster (ce qui arrêtera le nœud et supprimera toutes les données) avec :
 
     ccm remove
 
-The list of other provided commands is available through
+La liste des autres commandes fournies est disponible via :
 
     ccm
 
-Each command is then documented through the `-h` (or `--help`) flag. For
-instance `ccm add -h` describes the options for `ccm add`.
+Chaque commande est ensuite documentée via le paramètre `-h` (ou `--help`). 
 
-### Remote Usage (SSH/Paramiko)
+Par exemple `ccm add -h` décrit les options pour `ccm add`
 
-All the usage examples above will work exactly the same for a remotely
-configured machine; however remote options are required in order to establish a
-connection to the remote machine before executing the CCM commands:
 
-| Argument | Value | Description |
+### Utilisation à distance (SSH/Paramiko)
+
+Tous les exemples d'utilisation ci-dessus fonctionneront exactement de la même manière pour une machine configurée à distance ; 
+
+cependant, des options à distance sont nécessaires pour établir une connexion à la machine distante avant d'exécuter les commandes CCM :
+
+| Argument | Valeur | Description |
 | :--- | :--- | :--- |
-| --ssh-host | string | Hostname or IP address to use for SSH connection |
-| --ssh-port | int | Port to use for SSH connection<br/>Default is 22 |
-| --ssh-username | string | Username to use for username/password or public key authentication |
-| --ssh-password | string | Password to use for username/password or private key passphrase using public key authentication |
-| --ssh-private-key | filename | Private key to use for SSH connection |
+| --ssh-host | string | Nom d'hôte ou adresse IP à utiliser pour la connexion SSH |
+| --ssh-port | int | Port à utiliser pour la connexion SSH<br/>Valeur par défaut : 22 |
+| --ssh-username | string | Nom d'utilisateur à utiliser pour l'authentification par nom d'utilisateur/mot de passe ou par clé publique |
+| --ssh-password | string | Mot de passe à utiliser pour le nom d'utilisateur/mot de passe ou phrase de passe de clé privée à l'aide de l'authentification par clé publique |
+| --ssh-private-key | filename | Clé privée à utiliser pour la connexion SSH |
 
-#### Special Handling
+#### Précision :
 
-Some commands require files to be located on the remote server. Those commands
-are pre-processed, file transfers are initiated, and updates are made to the
-argument value for the remote execution of the CCM command:
+Certaines commandes nécessitent que les fichiers soient situés sur le serveur distant. 
+
+Ces commandes sont prétraitées, les transferts de fichiers sont initiés et des mises à jour sont apportées à la valeur de l'argument pour l'exécution à distance de la commande CCM :
 
 | Parameter | Description |
 | :--- | :--- |
-| `--dse-credentials` | Copy local DSE credentials file to remote server |
-| `--node-ssl` | Recursively copy node SSL directory to remote server |
-| `--ssl` | Recursively copy SSL directory to remote server |
+| `--dse-credentials` | Copie le fichier d'informations d'identification DSE local sur un serveur distant |
+| `--node-ssl` | Copie de manière récursive le répertoire SSL du nœud sur le serveur distant |
+| `--ssl` | Copie récursivement le répertoire SSL sur un serveur distant |
 
-#### Short Version
+#### Version courte
 
     ccm --ssh-host=192.168.33.11 --ssh-username=vagrant --ssh-password=vagrant create test -v 2.0.5 -n 3 -i 192.168.33.1 -s
 
-__Note__: `-i` is used to add an IP prefix during the create process to ensure
-          that the nodes communicate using the proper IP address for their node
+__Remarque__: `-i` est utilisé pour ajouter un préfixe IP pendant le processus de création afin de garantir que les nœuds communiquent en utilisant l'adresse IP appropriée pour leur nœud
 
-### Source Distribution
+### Distribution des sources
 
-If you'd like to use a source distribution instead of the default binary each time (for example, for Continuous Integration), you can prefix cassandra version with `source:`, for example:
+Si vous souhaitez utiliser une distribution source au lieu du binaire par défaut à chaque fois (par exemple, pour l'intégration continue), 
+
+vous pouvez préfixer la version cassandra avec `source:`, par example:
 
 ```
 ccm create test -v source:2.0.5 -n 3 -s
 ```
 
-### Automatic Version Fallback
+### Gestion automatique de la version en cas d'anomalie :
 
-If 'binary:' or 'source:' are not explicitly specified in your version string, then ccm will fallback to building the requested version from git if it cannot access the apache mirrors.
+Si 'binary:' or 'source:' ne sont pas explicitement spécifiés dans votre chaîne de version, 
 
-### Git and GitHub
+alors ccm reviendra à la construction de la version demandée à partir de git s'il ne peut pas accéder aux miroirs Apache.
 
-To use the latest version from the [canonical Apache Git repository](https://gitbox.apache.org/repos/asf?p=cassandra.git), use the version name `git:branch-name`, e.g.:
+
+### Git et GitHub
+
+Pour utiliser la dernière version du [canonical Apache Git repository](https://gitbox.apache.org/repos/asf?p=cassandra.git), utilisez le nom de la version `git:branch-name`, 
+
+par exemple :
 
 ```
 ccm create trunk -v git:trunk -n 5
 ```
 
-and to download a branch from a GitHub fork of Cassandra, you can prefix the repository and branch with `github:`, e.g.:
+et pour télécharger une branche à partir d'un fork GitHub de Cassandra, vous pouvez préfixer le référentiel et la branche avec :`github:`, 
+
+par exemple :
 
 ```
 ccm create patched -v github:jbellis/trunk -n 1
 ```
 
-### Bash command-line completion
-ccm has many sub-commands for both cluster commands as well as node commands, and sometimes you don't quite remember the name of the sub-command you want to invoke. Also, command lines may be long due to long cluster or node names.
+### Complétion de la ligne de commande Bash
 
-Leverage bash's *programmable completion* feature to make ccm use more pleasant. Copy `misc/ccm-completion.bash` to somewhere in your home directory (or /etc if you want to make it accessible to all users of your system) and source it in your `.bash_profile`:
+ccm possède de nombreuses sous-commandes pour les commandes de cluster ainsi que pour les commandes de nœud, 
+
+et parfois vous ne vous souvenez pas exactement du nom de la sous-commande que vous souhaitez appeler. 
+
+De plus, les lignes de commande peuvent être longues en raison de noms de cluster ou de nœud longs.
+
+Tirez parti de la fonctionnalité de complétion programmable de bash pour rendre l'utilisation de ccm plus agréable. 
+
+Copiez `misc/ccm-completion.bash` quelque part dans votre répertoire personnel (ou /etc si vous souhaitez le rendre accessible à tous les utilisateurs de votre système) 
+
+et sourcez-le dans votre  `.bash_profile`:
+
 ```
 . ~/scripts/ccm-completion.bash
 ```
 
-Once set up, `ccm sw<tab>` expands to `ccm switch `, for example. The `switch` sub-command has extra completion logic to help complete the cluster name. So `ccm switch cl<tab>` would expand to `ccm switch cluster-58` if cluster-58 is the only cluster whose name starts with "cl". If there is ambiguity, hitting `<tab>` a second time shows the choices that match:
+Une fois configuré,  `ccm sw<tab>` s'étend à `ccm switch `, par exemple. 
+
+La sous-commande `switch` dispose d'une logique de complétion supplémentaire pour aider à compléter le nom du cluster. 
+
+Ainsi,`ccm switch cl<tab>` s'étendrait à `ccm switch cluster-58` si le cluster-58 est le seul cluster dont le nom commence par « cl ». 
+
+En cas d'ambiguïté, appuyez  `<tab>` une deuxième fois pour afficher les choix correspondants :
+
 ```
 $ ccm switch cl<tab>
     ... becomes ...
@@ -321,56 +343,69 @@ $ ccm switch cluster-8<tab>
 $ ccm switch cluster-85
 ```
 
-It dynamically determines available sub-commands based on the ccm being invoked. Thus, users running multiple ccm's (or a ccm that they are continuously updating with new commands) will automagically work.
+Il détermine dynamiquement les sous-commandes disponibles en fonction du CCM invoqué. 
 
-The completion script relies on ccm having two hidden subcommands:
-* show-cluster-cmds - emits the names of cluster sub-commands.
-* show-node-cmds - emits the names of node sub-commands.
+Ainsi, les utilisateurs exécutant plusieurs CCM (ou un CCM qu'ils mettent continuellement à jour avec de nouvelles commandes) fonctionneront automatiquement.
 
-Thus, it will not work with sufficiently old versions of ccm.
+Le script de complétion s'appuie sur le fait que ccm possède deux sous-commandes cachées :
 
-Testing
+* show-cluster-cmds - émet les noms des sous-commandes du cluster.
+* 
+* show-node-cmds - émet les noms des sous-commandes du nœud.
+
+Ainsi, cela ne fonctionnera pas avec des versions suffisamment anciennes de ccm.
+
+Essai
 -----------------------
 
-Create a virtual environment i.e.:
+Creation de l'environnement virtel :
 
     python3 -m venv ccm
 
-`pip install` all dependencies as well as `mock` and `pytest`. Run `pytest` from the repository root to run the tests.
+`pip install` installe toutes les dépendances ainsi que`mock` et `pytest`. 
 
-Remote debugging
+Lancer `pytest` à partir de la racine du référentiel pour exécuter les tests.
+
+Débogage à distance
 -----------------------
 
-If you would like to connect to your Cassandra nodes with a remote debugger you have to pass the `-d` (or `--debug`) flag to the populate command:
+Si vous souhaitez vous connecter à vos nœuds Cassandra avec un débogueur distant, vous devez passer le paramètre `-d` (ou `--debug`) à la commande populate :
 
     ccm populate -d -n 3
 
-That will populate 3 nodes on IP 127.0.0.[1, 2, 3] setting up the remote debugging on ports 2100, 2200 and 2300.
-The main thread will not be suspended so you don't have to connect with a remote debugger to start a node.
+Cela remplira 3 nœuds sur l'IP 127.0.0.[1, 2, 3] en configurant le débogage à distance sur les ports 2100, 2200 et 2300. 
 
-Alternatively you can also specify a remote port with the `-r` (or `--remote-debug-port`) flag while adding a node
+Le thread principal ne sera pas suspendu, vous n'aurez donc pas besoin de vous connecter à un débogueur distant pour démarrer un nœud.
+
+Vous pouvez également spécifier un port distant avec le paramètre `-r` (ou `--remote-debug-port`) lors de l'ajout d'un nœud :
 
     ccm add node4 -r 5005 -i 127.0.0.4 -j 7400 -b
 
-Where things are stored
+Où les choses sont stockées :
 -----------------------
 
-By default, ccm stores all the node data and configuration files under `~/.ccm/cluster_name/`.
-This can be overridden using the `--config-dir` option with each command.
+Par défaut, ccm stocke toutes les données de nœud et les fichiers de configuration sous `~/.ccm/cluster_name/`.
+
+Cela peut être remplacé en utilisant le paramètre `--config-dir` avec chaque commande.
 
 DataStax Enterprise
 -------------------
 
-CCM 2.0 supports creating and interacting with DSE clusters. The --dse
-option must be used with the `ccm create` command. See the `ccm create -h`
-help for assistance.
+CCM 2.0 prend en charge la création et l'interaction avec les clusters DSE. 
+
+L'option --dse doit être utilisée avec la commande `ccm create`. 
+
+Voir `ccm create -h` pour obtenir de l'aide
+
 
 CCM Lib
 -------
 
-The ccm facilities are available programmatically through ccmlib. This could
-be used to implement automated tests against Cassandra. A simple example of
-how to use ccmlib follows:
+Les fonctions ccm sont disponibles par programmation via ccmlib. 
+
+Cela pourrait être utilisé pour implémenter des tests automatisés contre Cassandra. 
+
+Voici un exemple simple d'utilisation de ccmlib :
 
     import ccmlib.cluster
 
@@ -393,4 +428,4 @@ how to use ccmlib follows:
     # you can remove everything with cluster.remove()
 
 --
-Sylvain Lebresne <sylvain@datastax.com>
+Merci à Sylvain Lebresne <sylvain@datastax.com>
